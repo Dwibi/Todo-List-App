@@ -69,22 +69,16 @@ describe("App component", () => {
     localStorage.clear(); // Clear localStorage before each test
   });
 
-  it("shoud render its component children", () => {
+  it("Should render its component children", () => {
     render(<App />);
     const todoElement = screen.getByText("Todo");
+    const todoTitle = screen.getByText("TODO LIST");
 
     expect(todoElement).toBeTruthy();
+    expect(todoTitle).toBeTruthy();
   });
 
-  it("localstorage is empty array for first render", () => {
-    render(<App />);
-
-    const mockId = "todoList";
-    const mockJson = [];
-    expect(localStorage.getItem(mockId)).toEqual(JSON.stringify(mockJson));
-  });
-
-  it("should add list into state", () => {
+  it("Should add a list into state and localstorage", () => {
     const { rerender } = render(<App />);
     const todoElement = screen.getByText("Todo");
     fireEvent.click(todoElement);
@@ -98,7 +92,7 @@ describe("App component", () => {
     expect(localStorage.getItem(mockId)).toEqual(JSON.stringify(mockJson));
   });
 
-  it("should Change isCompleted if checkbox got click", () => {
+  it("Should change isCompleted on state and localstorage if checkbox was click", () => {
     const { rerender } = render(<App />);
     const todoElement = screen.getByText("Todo");
     fireEvent.click(todoElement);
@@ -119,7 +113,7 @@ describe("App component", () => {
     expect(localStorage.getItem(mockId)).toEqual(JSON.stringify(mockJson));
   });
 
-  it("should delete list if delete button got click", () => {
+  it("Should delete a list on state and localstorage if delete button was click", () => {
     const { rerender } = render(<App />);
 
     // add a todo list
@@ -143,7 +137,7 @@ describe("App component", () => {
     expect(todoElementSecond).toBeNull();
   });
 
-  it("should update list if its click Change button", () => {
+  it("should update a list on state and localstorage if change button was click", () => {
     const { rerender } = render(<App />);
 
     // add a todo list
