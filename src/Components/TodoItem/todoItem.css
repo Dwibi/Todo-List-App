@@ -1,0 +1,63 @@
+.item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.item-wrapper input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.item-wrapper p {
+  flex-grow: 1;
+  margin: 0;
+  word-wrap: break-word;
+  max-width: 332.5px;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.item-wrapper input[type="checkbox"]:checked + p {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.item-wrapper input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+.item-wrapper input[type="text"] {
+  flex-grow: 1;
+  max-width: 375px;
+  font-size: 1rem;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  padding: 0;
+}
+
+/* Style for the delete button */
+.item-wrapper button {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.item-wrapper button:hover {
+  background-color: #d32f2f;
+}
+
+.item-wrapper button:disabled {
+  cursor: not-allowed;
+}

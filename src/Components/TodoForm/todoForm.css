@@ -1,0 +1,30 @@
+.form {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  max-width: 500px;
+  justify-content: center;
+}
+
+.input {
+  padding: 1rem;
+  width: 100%;
+  outline: none;
+  border-radius: 5px;
+  border: 1px solid black;
+  font-size: 1rem;
+}
+
+.btn-add {
+  padding: 1rem;
+  border-radius: 5px;
+  background-color: blueviolet;
+  font-weight: bold;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-add:disabled {
+  cursor: not-allowed;
+}
