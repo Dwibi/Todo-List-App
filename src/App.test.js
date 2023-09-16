@@ -1,17 +1,18 @@
 import App from "./App";
 import { fireEvent, render, screen } from "@testing-library/react";
 
+// Mock a component that App page use
 jest.mock("./Components/TodoForm/TodoForm", () => {
   return ({ addTodo }) => (
     <div>
-      <button onClick={() => addTodo("Todo Title")}>Todo</button>
+      <button onClick={() => addTodo("Todo Title")}>Add</button>
     </div>
   );
 });
 
+// Mock a component that App page use
 jest.mock("./Components/TodoItem/TodoItem", () => {
   const React = require("react");
-
   return ({
     index,
     todo,
@@ -70,110 +71,112 @@ describe("App component", () => {
   });
 
   it("Should render its component children", () => {
-    render(<App />);
-    const todoElement = screen.getByText("Todo");
-    const todoTitle = screen.getByText("TODO LIST");
+    render(<App />); // Render the component for first time
 
-    expect(todoElement).toBeTruthy();
-    expect(todoTitle).toBeTruthy();
+    const addButtonElement = screen.getByText("Add"); // Get a element that have text "Add" in this case a button
+    const todoTitle = screen.getByText("TODO LIST"); // Get a element that have text "TODO LIST" in this case a h1 element / title
+
+    expect(addButtonElement).toBeTruthy(); // Expect add button to show in screen
+    expect(todoTitle).toBeTruthy(); // Expect h1 element / title to show in screen
   });
 
   it("Should add a list into state and localstorage", () => {
-    const { rerender } = render(<App />);
-    const todoElement = screen.getByText("Todo");
-    fireEvent.click(todoElement);
+    const { rerender } = render(<App />); // Render the component for first time
 
-    rerender(<App />);
+    const addButtonElement = screen.getByText("Add"); // Get a element that have text "Add" in this case a button
+    fireEvent.click(addButtonElement); // click the Add Button Element to run AddTodo function
 
-    const todoElementSecond = screen.getByText(/Todo Title/i);
-    const mockJson = [{ todo: "Todo Title", isCompleted: false }];
-    const mockId = "todoList";
-    expect(todoElementSecond).toBeTruthy();
-    expect(localStorage.getItem(mockId)).toEqual(JSON.stringify(mockJson));
+    rerender(<App />); // Rerender the component after click the add button element
+
+    const paragraphElement = screen.getByText(/Todo Title/i); // Get a element that have text same like RegExp /Todo Title/i in this case a paragraph element
+    const mockJson = [{ todo: "Todo Title", isCompleted: false }]; // value that will be in the localstorage
+    const localStorageKey = "todoList"; // a key that will be passed into localstorage getItem function
+
+    expect(paragraphElement).toBeTruthy(); // Expect the paragraph element to show in screen
+    expect(localStorage.getItem(localStorageKey)).toEqual(
+      JSON.stringify(mockJson)
+    ); // Expect the localStorage that have key "todoList" have a value like mockJson variable
   });
 
   it("Should change isCompleted on state and localstorage if checkbox was click", () => {
-    const { rerender } = render(<App />);
-    const todoElement = screen.getByText("Todo");
-    fireEvent.click(todoElement);
+    const { rerender } = render(<App />); // Render the component for first time
+    const addButtonElement = screen.getByText("Add"); // Get a element that have text "Add" in this case a button
+    fireEvent.click(addButtonElement); // Click the Add Button Element to run AddTodo function
 
-    rerender(<App />);
+    rerender(<App />); // Rerender the component after click the add button element
 
-    const todoCheckboxEl = screen.getByPlaceholderText("checkbox");
-    fireEvent.click(todoCheckboxEl);
+    const CheckboxElement = screen.getByPlaceholderText("checkbox"); // Get a element that have placehodler text "checkbox" in this case a checkbox input element
+    fireEvent.click(CheckboxElement); // Click the checkbox input Element to run completedTodo function
+    expect(CheckboxElement.checked).toBe(true); // Expect the checkbox to be checked
 
-    expect(todoCheckboxEl.checked).toBe(true);
+    rerender(<App />); // Rerender the component after click the checkbox input element
 
-    rerender(<App />);
-
-    const mockJson = [{ todo: "Todo Title", isCompleted: true }];
-    const mockId = "todoList";
-
-    expect(todoCheckboxEl.checked).toBe(true);
-    expect(localStorage.getItem(mockId)).toEqual(JSON.stringify(mockJson));
+    const mockJson = [{ todo: "Todo Title", isCompleted: true }]; // value that will be in the localstorage
+    const localStorageKey = "todoList"; // a key that will be passed into localstorage getItem function
+    expect(localStorage.getItem(localStorageKey)).toEqual(
+      JSON.stringify(mockJson)
+    ); // Expect the localStorage that have key "todoList" have a value like mockJson variable
   });
 
   it("Should delete a list on state and localstorage if delete button was click", () => {
-    const { rerender } = render(<App />);
+    const { rerender } = render(<App />); // Render the component for first time
 
     // add a todo list
-    const todoElement = screen.getByText("Todo");
-    fireEvent.click(todoElement);
+    const addButtonElement = screen.getByText("Add"); // Get a element that have text "Add" in this case a button
+    fireEvent.click(addButtonElement); // click the Add Button Element to run AddTodo function
 
-    rerender(<App />);
+    rerender(<App />); // Rerender the component after click the add button element
 
     //trigger the button delete button
     const todoDeleteElement = screen.getByText("Delete");
     fireEvent.click(todoDeleteElement);
 
-    rerender(<App />);
+    rerender(<App />); // Rerender the component after click the add button element
 
-    // Check if the deleted todo item is not present in the rendered output
-    const todoElementSecond = screen.queryByText(/Todo Title/i);
-    const mockJson = [];
-    const mockId = "todoList";
+    const paragraphElement = screen.queryByText(/Todo Title/i); // Get a element that have text same like RegExp /Todo Title/i in this case a paragraph element
+    expect(paragraphElement).toBeNull(); // Expect the paragraph element is not show in screen
 
-    expect(localStorage.getItem(mockId)).toEqual(JSON.stringify(mockJson));
-    expect(todoElementSecond).toBeNull();
+    const mockJson = []; // value that will be in the localstorage
+    const localStorageKey = "todoList"; // a key that will be passed into localstorage getItem function
+    expect(localStorage.getItem(localStorageKey)).toEqual(
+      JSON.stringify(mockJson)
+    ); // Expect the localStorage that have key "todoList" have a value like mockJson variable
   });
 
   it("should update a list on state and localstorage if change button was click", () => {
-    const { rerender } = render(<App />);
+    const { rerender } = render(<App />); // Render the component for first time
 
     // add a todo list
-    const todoElement = screen.getByText("Todo");
-    fireEvent.click(todoElement);
+    const addButtonElement = screen.getByText("Add"); // Get a element that have text "Add" in this case a button
+    fireEvent.click(addButtonElement); // click the Add Button Element to run AddTodo function
 
-    rerender(<App />);
+    rerender(<App />); // Rerender the component after click the add button element
 
     //trigger the button edit button button
     // to show Change button and input for change
-    const todoEditElement = screen.getByText("Edit");
-    fireEvent.click(todoEditElement);
+    const EditElement = screen.getByText("Edit"); // Get a element that have text "Edit" in this case a button
+    fireEvent.click(EditElement); // click the edit button to run setIsEdit function
 
-    rerender(<App />);
+    rerender(<App />); // Rerender the component after click the edit button element
 
-    const todoInputChangeEl = screen.queryByPlaceholderText(
+    const inputChangeEl = screen.queryByPlaceholderText(
       "Please enter your todo"
-    );
+    ); // Get a element that have placeholder text "Please enter your todo" in this case a input text
 
-    const testValue = "test todo test";
-    // change input to test value
-    fireEvent.change(todoInputChangeEl, { target: { value: testValue } });
+    const testValue = "test todo test"; // value that will be passed to input value
+    fireEvent.change(inputChangeEl, { target: { value: testValue } }); // Change the input value to be the same as testValue
 
-    const changeButton = screen.queryByText("Change");
+    const changeButton = screen.queryByText("Change"); // Get a element that have text "Change" in this case a button
+    fireEvent.click(changeButton); // Click the change button to run clickChangeHandler function
 
-    expect(changeButton).toBeInTheDocument();
+    const paragraphElement = screen.queryByText(testValue); // Get a element that have text same like testValue in this case a paragraph element
+    expect(paragraphElement).toBeTruthy(); // Expect paragraph element to show in screen
 
-    fireEvent.click(changeButton);
+    const mockJson = [{ todo: testValue, isCompleted: false }]; // value that will be in the localstorage
+    const localStorageKey = "todoList"; // a key that will be passed into localstorage getItem function
 
-    // Check if the updated todo item is present in the rendered output
-    // and update the localStorage
-    const todoElementSecond = screen.queryByText(testValue);
-    const mockJson = [{ todo: testValue, isCompleted: false }];
-    const mockId = "todoList";
-
-    expect(localStorage.getItem(mockId)).toEqual(JSON.stringify(mockJson));
-    expect(todoElementSecond).toBeTruthy();
+    expect(localStorage.getItem(localStorageKey)).toEqual(
+      JSON.stringify(mockJson)
+    ); // Expect the localStorage that have key "todoList" have a value like mockJson variable
   });
 });
