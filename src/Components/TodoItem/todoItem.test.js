@@ -131,7 +131,7 @@ describe("TodoItem Component", () => {
     expect(changeButton).toBeNull(); // Expect changeButton is not show in screen
   });
 
-  it("Delete button should delete todo from list if delete button was click", () => {
+  it("Delete button should call deleteTodo function if delete button was click", () => {
     const mockDeleteTodo = jest.fn(); // Make Mock deleteTodo function and pass into prop
     const mockCompletedTodo = jest.fn(); // Make Mock completedTodo function and pass into prop
     const mockChangeTodoList = jest.fn(); // Make Mock changeTodoList function and pass into prop
@@ -154,7 +154,7 @@ describe("TodoItem Component", () => {
     expect(mockDeleteTodo).toHaveBeenCalledWith(0); // Expect mockDeleteTodo to call with arguments 0 (index from prop)
   });
 
-  it("Checkbox should be change if checkbox was click", () => {
+  it("Checkbox should be change and call completedTodo function if checkbox was click", () => {
     const mockDeleteTodo = jest.fn(); // Make Mock deleteTodo function and pass into prop
     const mockCompletedTodo = jest.fn(); // Make Mock completedTodo function and pass into prop
     const mockChangeTodoList = jest.fn(); // Make Mock changeTodoList function and pass into prop
@@ -290,7 +290,7 @@ describe("TodoItem Component", () => {
     expect(checkboxElement).toBeDisabled(); // Expect the checkbox input to be Disabled
   });
 
-  it("Paragraph should change if input have value and change button was click", () => {
+  it("Change button should call changeTodoList function and hide input text and change button if input have value and change button was click", () => {
     const mockDeleteTodo = jest.fn(); // Make Mock deleteTodo function and pass into prop
     const mockCompletedTodo = jest.fn(); // Make Mock completedTodo function and pass into prop
     const mockChangeTodoList = jest.fn(); // Make Mock changeTodoList function and pass into prop
